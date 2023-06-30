@@ -11,39 +11,55 @@ export default class WordLadder {
         this.endWord = endWord;
         this.dictionary = dictionary;
     }
-    shortestLadder(anagrams=false,addRemove=false) {
+    shortestLadder(anagrams=false,addRemove=false,n=0) {
         if (this.startWord.length != this.endWord.length && !addRemove) {
             return undefined;
         }
         const startNode = new WordNode(this.startWord,null,this.dictionary);
-        if (anagrams === true) {
-            console.log("hey")
-            startNode.addAnagramChildren();   
-        }
         if (addRemove === true) {
-            startNode.addAddRemoveChildren();   
+            startNode.addAddRemoveChildren();
+        }
+        if (anagrams === true) {
+            startNode.addAnagramChildren();   
         }
         startNode.addRungChildren();
         const alreadySeenWords = [];
         const visitQueue = startNode.children;
+        let visitWordsTest = visitQueue.map(node => node.word);
         let currentNode = startNode;
         while (visitQueue.length > 0) {
             currentNode = visitQueue.shift();
-            if (currentNode.word === this.endWord) {
-                break;
+            if (currentNode.word === this.endword) {
+                if (n >0) {
+                currentNode = visitQueue.shift();
+                n--;
+                }
             }
-            currentNode.addRungChildren();
-            if (anagrams === true) {
-                console.log("hey")
-                currentNode.addAnagramChildren();
+            if (currentNode.word === this.endWord) {
+                while ((currentNode.word === this.endWord) && (n > 0)) {
+                    // debugger
+                    currentNode = visitQueue.shift();
+                    n--;
+                } 
+                if (currentNode.word === this.endWord){
+                // debugger
+                break;
+                }
             }
             if (addRemove === true) {
                 currentNode.addAddRemoveChildren();
             }
+            if (anagrams === true) {
+                currentNode.addAnagramChildren();
+            }
+            currentNode.addRungChildren();
             alreadySeenWords.push(currentNode.word);
             let visitWords = visitQueue.map(node => node.word);
             currentNode.children.forEach(childNode => {
-                if (!alreadySeenWords.includes(childNode.word) && !visitWords.includes(childNode.word)) {
+                if (childNode.word === this.endWord && n > 0) {
+                    visitQueue.push(childNode);
+                    visitWords.push(childNode.word);
+                } else if (!alreadySeenWords.includes(childNode.word) && !visitWords.includes(childNode.word)) {
                     visitQueue.push(childNode);
                     visitWords.push(childNode.word);
                 }

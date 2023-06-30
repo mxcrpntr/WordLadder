@@ -9,7 +9,7 @@ export default class WordNode {
         this.children = [];
         this.nextRungWords = this.nextRungWords.bind(this);
         // this.addRungChildren.bind(this)();
-        // this.anagrams = anagrams.bind(this)(this.word);
+        this.anagrams = anagrams.bind(this)(this.word);
         // this.addLetterWords = this.addLetterWords.bind(this);
         // this.removeLetterWords = this.removeLetterWords.bind(this);
     }
@@ -51,16 +51,16 @@ export default class WordNode {
     }
     addLetterWords() {
         const addLetterWords = [];
-        for (let i = 0; i < this.word.length; i++) {
+        for (let i = 0; i <= this.word.length; i++) {
+            let beforeStr = this.word.slice(0,i);
+            let afterStr = this.word.slice(i);
             for (let j = 0; j < ALPHA.length; j++) {
-                let beforeStr = this.word.slice(0,i);
-                let afterStr = this.word.slice(i);
-                for (let j = 0; j < ALPHA.length; j++) {
-                    let newStr = beforeStr.split("")
-                                .concat([ALPHA[j]])
-                                .concat(afterStr.split(""))
-                                .join("");
-                    if (this.dictionary.has(newStr)) addLetterWords.push(newStr);
+                let newStr = beforeStr.split("")
+                            .concat([ALPHA[j]])
+                            .concat(afterStr.split(""))
+                            .join("");
+                if (this.dictionary.has(newStr)) {
+                    addLetterWords.push(newStr);
                 }
             }
         }
@@ -91,11 +91,16 @@ export default class WordNode {
 function anagrams(word) {
     // console.log(`lookin up anagrams for ${word}`)
     const anagrams = [];
-    perms(word).forEach(str => {
-        if (this.dictionary.has(str) && str != word) {
-            anagrams.push(str);
-        }
+    // perms(word).forEach(str => {
+    //     if (this.dictionary.has(str) && str != word) {
+    //         anagrams.push(str);
+    //     }
+    // })
+    console.log('start')
+    this.dictionary.forEach(word2 => {
+        if(isAnagram(word,word2)) anagrams.push(word2);
     })
+    console.log('end')
     return anagrams;
 }
 
@@ -115,4 +120,26 @@ function perms(word) {
         permsArr = permsArr.concat(iPerms);
     }
     return permsArr;
+}
+
+function isAnagram(word1,word2) {
+    if (word1.length != word2.length) return false;
+    const obj = {};
+    for (let i = 0; i < word1.length; i++) {
+        let letter = word1.slice(i,i+1);
+        if (obj[letter] != undefined) {
+            obj[letter] += 1;
+        } else {
+            obj[letter] = 1;
+        }
+    }
+    for (let i = 0; i < word2.length; i++) {
+        let letter = word2.slice(i,i+1);
+        if (obj[letter] === undefined) {
+            break
+        } else {
+            obj[letter] -= 1;
+        }
+    }
+    return Object.values(obj).every(el => el === 0);
 }
