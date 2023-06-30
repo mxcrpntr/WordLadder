@@ -8,13 +8,13 @@ export default class WordNode {
         this.dictionary = dictionary;
         this.children = [];
         this.nextRungWords = this.nextRungWords.bind(this);
-        this.addRungChildren.bind(this)();
-        this.anagrams = anagrams(this.word);
-        this.addLetterWords = this.addLetterWords.bind(this);
-        this.removeLetterWords = this.removeLetterWords.bind(this);
+        // this.addRungChildren.bind(this)();
+        // this.anagrams = anagrams.bind(this)(this.word);
+        // this.addLetterWords = this.addLetterWords.bind(this);
+        // this.removeLetterWords = this.removeLetterWords.bind(this);
     }
     addChild(newWord) {
-        const child = new WordNode(newWord,this);
+        const child = new WordNode(newWord,this,this.dictionary);
         this.children.push(child);
     }
     removeChild(child) {
@@ -33,21 +33,20 @@ export default class WordNode {
                             .concat([ALPHA[j]])
                             .concat(afterStr.split(""))
                             .join("");
-                if (this.dictionary.includes(newstr)) nextRungWords.push(newStr);
+                if (this.dictionary.has(newStr) && newStr != this.word) nextRungWords.push(newStr);
             }
         }
         return nextRungWords;
     }
     addRungChildren() {
-        this.nextRungWords().forEach(nextWord => {
-            const nextNode = new WordNode(nextWord, this, this.dictionary);
-            this.addChild(nextNode);
-        })
+        let rungChildren = this.nextRungWords();
+        for (let i = 0; i < rungChildren.length; i++) {
+            this.addChild(rungChildren[i]);
+        }
     }
     addAnagramChildren() {
         this.anagrams.forEach(anagram => {
-            const nextNode = new WordNode(anagram, this, this.dictionary);
-            this.addChild(nextNode);
+            this.addChild(anagram);
         })
     }
     addLetterWords() {
@@ -61,7 +60,7 @@ export default class WordNode {
                                 .concat([ALPHA[j]])
                                 .concat(afterStr.split(""))
                                 .join("");
-                    if (this.dictionary.includes(newstr)) addLetterWords.push(newStr);
+                    if (this.dictionary.has(newStr)) addLetterWords.push(newStr);
                 }
             }
         }
@@ -70,33 +69,30 @@ export default class WordNode {
     removeLetterWords() {
         const removeLetterWords = [];
         for (let i = 0; i < this.word.length; i++) {
-            for (let j = 0; j < ALPHA.length; j++) {
-                let beforeStr = this.word.slice(0,i);
-                let afterStr = this.word.slice(i+1);
-                let newStr = beforeStr.split("")
-                            .concat(afterStr.split(""))
-                            .join("");
-                if (this.dictionary.includes(newstr)) removeLetterWords.push(newStr);
-            }
+            let beforeStr = this.word.slice(0,i);
+            let afterStr = this.word.slice(i+1);
+            let newStr = beforeStr.split("")
+                        .concat(afterStr.split(""))
+                        .join("");
+            if (this.dictionary.has(newStr)) removeLetterWords.push(newStr);
         }
         return removeLetterWords;
     }
     addAddRemoveChildren() {
         this.addLetterWords().forEach(addWord => {
-            const nextNode = new WordNode(addWord, this, this.dictionary);
-            this.addChild(nextNode);
+            this.addChild(addWord);
         })
         this.removeLetterWords().forEach(removeWord => {
-            const nextNode = new WordNode(removeWord, this, this.dictionary);
-            this.addChild(nextNode);
+            this.addChild(removeWord);
         })
     }
 }
 
 function anagrams(word) {
+    // console.log(`lookin up anagrams for ${word}`)
     const anagrams = [];
     perms(word).forEach(str => {
-        if (this.dictionary.includes(str) && str != word) {
+        if (this.dictionary.has(str) && str != word) {
             anagrams.push(str);
         }
     })
@@ -115,7 +111,7 @@ function perms(word) {
 
         let iLetterArr = word.split("").slice(i,i+1);
  
-        let iPerms = shorterPerms.map(perm => iLetterArr.concat(perm.split("")).join(""));
+        let iPerms = shorterPerms.map(perm => (iLetterArr.concat(perm.split(""))).join(""));
         permsArr = permsArr.concat(iPerms);
     }
     return permsArr;
