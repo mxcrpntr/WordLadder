@@ -11,7 +11,35 @@
   </head>
 
   <body>
-    <div id="main"></div>
+
+
+    <div id="main">
+      <div id="input">
+        <form action="" method="POST">
+          <label>Starting word:
+          <input type="text" value="" id="startWord">
+          </label>
+          <label>Ending word:
+          <input type="text" value="" id="endWord">
+          </label>
+          <label>Allow anagrams:
+          <input type="checkbox" value="true" id="anagrams">
+          </label>
+          <label>Allow adding/dropping letters:
+          <input type="checkbox" value="true" id="addRemove">
+          </label>
+          <input type="submit" value="Generate shortest ladder">
+        </form>
+      </div>
+        <div id="ladder-and-graph">
+        <div id="ladder">
+          <ul></ul>
+        </div>
+        <div id="graph">
+
+        </div>
+      </div>
+    </div>
   </body>
 
 </html>

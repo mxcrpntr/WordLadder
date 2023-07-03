@@ -14,12 +14,20 @@ export default class WordLadder {
     }
     shortestLadder(anagrams=false,addRemove=false,n=0) {
         if (this.startWord.length != this.endWord.length && !addRemove) {
-            return undefined;
+            return [undefined,new WordNode(this.startWord,null,this.dictionary,this.dictionaryObj)];
         }
         const startNode = new WordNode(this.startWord,null,this.dictionary,this.dictionaryObj);
-        startNode.addChildren.bind(startNode)(anagrams,addRemove);
+        if (this.startWord === this.endWord) {
+            return [[this.startWord],new WordNode(this.startWord,null,this.dictionary,this.dictionaryObj)];
+        }
+        let endWordIsAChild = false;
+        let endWordInQueue = false;
+        endWordIsAChild = startNode.addChildren.bind(startNode)(anagrams,addRemove,endWordIsAChild,this.endWord);
         const alreadySeenWords = [];
         const visitQueue = [].concat(startNode.children);
+        if (visitQueue.includes(this.endWord)) {
+            endWordInQueue = true;
+        }
         let currentNode = startNode;
         while (visitQueue.length > 0) {
             currentNode = visitQueue.shift();
@@ -38,25 +46,29 @@ export default class WordLadder {
                 break;
                 }
             }
-            currentNode.addChildren.bind(currentNode)(anagrams,addRemove);
+            endWordIsAChild = currentNode.addChildren.bind(currentNode)(anagrams,addRemove,endWordIsAChild,this.endWord);
 
             // console.log(startNode.children.map(node => node.word));
 
             alreadySeenWords.push(currentNode.word);
             let visitWords = visitQueue.map(node => node.word);
-
+            console.log(visitWords);
             currentNode.children.forEach(childNode => {
-                if (childNode.word === this.endWord && n > 0) {
-                    visitQueue.push(childNode);
-                    visitWords.push(childNode.word);
-                }  else if (!alreadySeenWords.includes(childNode.word) && !visitWords.includes(childNode.word) && !childNode.isOwnAncestor()) {
-                    visitQueue.push(childNode);
-                    visitWords.push(childNode.word);
-                } 
-                // else if (n > 0 && !childNode.isOwnAncestor() && !visitWords.includes(childNode.word)) {
-                //     visitQueue.push(childNode);
-                //     visitWords.push(childNode.word);
-                // }
+                if (!endWordInQueue) {
+                    // if (childNode.word === this.endWord && n > 0) {
+                        // visitQueue.push(childNode);
+                        // visitWords.push(childNode.word);
+                    // } 
+                    if (!alreadySeenWords.includes(childNode.word) && !visitWords.includes(childNode.word) && !childNode.isOwnAncestor()) {
+                        visitQueue.push(childNode);
+                        visitWords.push(childNode.word);
+                        if (childNode.word === this.endWord) endWordInQueue = true;
+                    } 
+                    // else if (n > 0 && !childNode.isOwnAncestor() && !visitWords.includes(childNode.word)) {
+                    //     visitQueue.push(childNode);
+                    //     visitWords.push(childNode.word);
+                    // }
+                }
             })
         }
         if (currentNode.word === this.endWord) {
@@ -69,9 +81,10 @@ export default class WordLadder {
                 ladder.unshift(node.word);
             }
             // return ladder;
-            return startNode;
+            return [ladder,startNode];
         }
-        return undefined;
+        // return undefined;
+        return [undefined,startNode];
     }
 }
 
