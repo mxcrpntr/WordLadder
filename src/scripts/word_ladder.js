@@ -4,28 +4,22 @@ import WordNode from "./word_node.js";
 
 
 export default class WordLadder {
-    constructor(startWord,endWord,dictionary) {
-        if (!dictionary.has(startWord)) throw Error `${startWord} is not in our dictionary!`
-        if (!dictionary.has(endWord)) throw Error `${endWord} is not in our dictionary!`
+    constructor(startWord,endWord,dictionaryArr,dictionaryObj) {
         this.startWord = startWord;
         this.endWord = endWord;
-        this.dictionary = dictionary;
+        this.dictionary = new Set(dictionaryArr);
+        if (!this.dictionary.has(startWord)) throw Error `${startWord} is not in our dictionary!`
+        if (!this.dictionary.has(endWord)) throw Error `${endWord} is not in our dictionary!`
+        this.dictionaryObj = dictionaryObj;
     }
     shortestLadder(anagrams=false,addRemove=false,n=0) {
         if (this.startWord.length != this.endWord.length && !addRemove) {
             return undefined;
         }
-        const startNode = new WordNode(this.startWord,null,this.dictionary);
-        if (addRemove === true) {
-            startNode.addAddRemoveChildren();
-        }
-        if (anagrams === true) {
-            startNode.addAnagramChildren();   
-        }
-        startNode.addRungChildren();
+        const startNode = new WordNode(this.startWord,null,this.dictionary,this.dictionaryObj);
+        startNode.addChildren.bind(startNode)(anagrams,addRemove);
         const alreadySeenWords = [];
-        const visitQueue = startNode.children;
-        let visitWordsTest = visitQueue.map(node => node.word);
+        const visitQueue = [].concat(startNode.children);
         let currentNode = startNode;
         while (visitQueue.length > 0) {
             currentNode = visitQueue.shift();
@@ -37,32 +31,32 @@ export default class WordLadder {
             }
             if (currentNode.word === this.endWord) {
                 while ((currentNode.word === this.endWord) && (n > 0)) {
-                    // debugger
                     currentNode = visitQueue.shift();
                     n--;
                 } 
                 if (currentNode.word === this.endWord){
-                // debugger
                 break;
                 }
             }
-            if (addRemove === true) {
-                currentNode.addAddRemoveChildren();
-            }
-            if (anagrams === true) {
-                currentNode.addAnagramChildren();
-            }
-            currentNode.addRungChildren();
+            currentNode.addChildren.bind(currentNode)(anagrams,addRemove);
+
+            // console.log(startNode.children.map(node => node.word));
+
             alreadySeenWords.push(currentNode.word);
             let visitWords = visitQueue.map(node => node.word);
+
             currentNode.children.forEach(childNode => {
                 if (childNode.word === this.endWord && n > 0) {
                     visitQueue.push(childNode);
                     visitWords.push(childNode.word);
-                } else if (!alreadySeenWords.includes(childNode.word) && !visitWords.includes(childNode.word)) {
+                }  else if (!alreadySeenWords.includes(childNode.word) && !visitWords.includes(childNode.word) && !childNode.isOwnAncestor()) {
                     visitQueue.push(childNode);
                     visitWords.push(childNode.word);
-                }
+                } 
+                // else if (n > 0 && !childNode.isOwnAncestor() && !visitWords.includes(childNode.word)) {
+                //     visitQueue.push(childNode);
+                //     visitWords.push(childNode.word);
+                // }
             })
         }
         if (currentNode.word === this.endWord) {
@@ -74,7 +68,8 @@ export default class WordLadder {
                 parent = node.parent;
                 ladder.unshift(node.word);
             }
-            return ladder;
+            // return ladder;
+            return startNode;
         }
         return undefined;
     }

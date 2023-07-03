@@ -2,41 +2,49 @@
 const ALPHA = 'abcdefghijklmnopqrstuvwxyz'.split("");
 
 export default class WordNode {
-    constructor(word,parent,dictionary) {
+    constructor(word,parent,dictionary,dictionaryObj) {
         this.word = word;
         this.parent = parent;
         this.dictionary = dictionary;
         this.children = [];
         this.nextRungWords = this.nextRungWords.bind(this);
         // this.addRungChildren.bind(this)();
-        this.anagrams = anagrams.bind(this)(this.word);
+        // this.anagrams = anagrams.bind(this)(this.word);
         // this.addLetterWords = this.addLetterWords.bind(this);
         // this.removeLetterWords = this.removeLetterWords.bind(this);
+        this.dictionaryObj = dictionaryObj
     }
     addChild(newWord) {
-        const child = new WordNode(newWord,this,this.dictionary);
-        this.children.push(child);
+        const child = new WordNode(newWord,this,this.dictionary,this.dictionaryObj);
+        if (!child.isOwnAncestor()) this.children.push(child);
     }
-    removeChild(child) {
-        const childIdx = this.children.indexOf(child);
-        if (childIdx >= 0 && childIdx < this.children.length) {
-            this.children.splice(childIdx,1);
-        }
-    }
+    // removeChild(child) {
+    //     const childIdx = this.children.indexOf(child);
+    //     if (childIdx >= 0 && childIdx < this.children.length) {
+    //         this.children.splice(childIdx,1);
+    //     }
+    // }
     nextRungWords() {
         const nextRungWords = [];
         for (let i = 0; i < this.word.length; i++) {
             let beforeStr = this.word.slice(0,i);
             let afterStr = this.word.slice(i+1);
             for (let j = 0; j < ALPHA.length; j++) {
-                let newStr = beforeStr.split("")
-                            .concat([ALPHA[j]])
-                            .concat(afterStr.split(""))
-                            .join("");
-                if (this.dictionary.has(newStr) && newStr != this.word) nextRungWords.push(newStr);
+                if (this.word.slice(i,i+1) != ALPHA[j]) {
+                    let newStr = beforeStr.split("")
+                                .concat([ALPHA[j]])
+                                .concat(afterStr.split(""))
+                                .join("");
+                    if (this.dictionary.has(newStr) && newStr != this.word) nextRungWords.push(newStr);
+                }
             }
         }
         return nextRungWords;
+    }
+    addChildren(anagrams=false,addRemove=false) {
+        if (addRemove) this.addAddRemoveChildren();
+        if (anagrams) this.addAnagramChildren();
+        this.addRungChildren();
     }
     addRungChildren() {
         let rungChildren = this.nextRungWords();
@@ -45,9 +53,13 @@ export default class WordNode {
         }
     }
     addAnagramChildren() {
-        this.anagrams.forEach(anagram => {
-            this.addChild(anagram);
-        })
+        let sorted = this.word.split("").sort();
+        let anagrams = this.dictionaryObj[sorted];
+        if (anagrams != undefined) {
+            for (let i = 0; i < anagrams.length; i++) {
+                if (!(this.word === anagrams[i])) this.addChild(anagrams[i]);
+            }
+        }
     }
     addLetterWords() {
         const addLetterWords = [];
@@ -85,6 +97,14 @@ export default class WordNode {
         this.removeLetterWords().forEach(removeWord => {
             this.addChild(removeWord);
         })
+    }
+    isOwnAncestor() {
+        let parentNode = this.parent;
+        while (parentNode != null) {
+            if (parentNode.word === this.word) return true;
+            parentNode = parentNode.parent;
+        }
+        return false;
     }
 }
 
