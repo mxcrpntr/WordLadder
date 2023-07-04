@@ -2,6 +2,8 @@
 <meta charset="utf-8">
 <style>
 
+    
+
 .node {
   stroke: #fff;
   stroke-width: 2px;
@@ -23,7 +25,21 @@ var width = 960,
 var tree = d3.layout.tree()
     .size([width - 20, height - 20]);
 
-var root = {},
+const parentNode = {id: 0, word: "cat", parent: null, children: []};
+var root = {id: parentNode.id, word: parentNode.word, parent: null, children: []},
+    nodes = tree(root);
+const childArr = ["bat","eat","hat","mat","oat","pat","rat","sat","tat","vat","cot","cut","cab","cad","cam","can","cap", "car"]
+for (let i = 0; i < childArr.length; i++) {
+    let newChild = {id: i+1, word: childArr[i], parent: root, children: []};
+    parentNode.children = parentNode.children.concat([newChild]);
+}
+parentNode.children[parentNode.children.length - 1].children.push( {id: childArr.length + 1, word: "carl", parent: parentNode.children[parentNode.children.length - 1], children: []})
+console.log(parentNode);
+
+
+
+
+var root = {id: parentNode.id, word: parentNode.word, parent: null, children: []},
     nodes = tree(root);
 
 root.parent = root;
@@ -41,18 +57,31 @@ var svg = d3.select("body").append("svg")
 var node = svg.selectAll(".node"),
     link = svg.selectAll(".link");
 
-var duration = 750,
+var duration = 300,
     timer = setInterval(update, duration);
 
-function update() {
-  if (nodes.length >= 500) return clearInterval(timer);
+var treeQueue = parentNode.children;
+var currentNode = root;
 
+
+function update() {
+  if (currentNode.word === 'carl') return clearInterval(timer);
+
+  currentNode = treeQueue.shift();
+  root.children = currentNode.parent.children
+nodes = tree(root);
+
+  console.log(currentNode.word)
   // Add a new node to a random parent.
-  var n = {id: nodes.length},
-      p = nodes[Math.random() * nodes.length | 0];
+  var n = {id: currentNode.id, word: currentNode.word, parent: currentNode.parent, children: currentNode.children},
+      p = currentNode.parent;
   if (p.children) p.children.push(n); else p.children = [n];
   nodes.push(n);
+  console.log(n.word)
+  console.log(p.children)
 
+  treeQueue = treeQueue.concat(currentNode.children);
+    console.log(treeQueue.map(node => node.word))
   // Recompute the layout and data join.
   node = node.data(tree.nodes(root), function(d) { return d.id; });
   link = link.data(tree.links(nodes), function(d) { return d.source.id + "-" + d.target.id; });
@@ -63,6 +92,12 @@ function update() {
       .attr("r", 4)
       .attr("cx", function(d) { return d.parent.px; })
       .attr("cy", function(d) { return d.parent.py; });
+
+node.enter().append("text")
+    .attr("class", "word")
+    .attr("x", function(d) { return d.parent.px + 10; })
+    .attr("y", function(d) { return d.parent.py + 5;})
+    .text(function(d) { return d.word; });
 
   // Add entering links in the parent’s old position.
   link.enter().insert("path", ".node")
@@ -82,6 +117,12 @@ function update() {
   t.selectAll(".node")
       .attr("cx", function(d) { return d.px = d.x; })
       .attr("cy", function(d) { return d.py = d.y; });
+
+  t.selectAll(".word")
+    .attr("x", function(d) { return d.px + 10; })
+    .attr("y", function(d) { return d.py + 5; });
 }
+
+
 
 </script>

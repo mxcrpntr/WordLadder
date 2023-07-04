@@ -1,6 +1,7 @@
-import Example from "./scripts/example"
+// import Example from "./scripts/example"
 import WordLadder from "./scripts/word_ladder"
 import Tree from "./scripts/tree"
+import * as d3 from 'd3-3';
 
 document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch('./src/dictionary.txt');
@@ -23,13 +24,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     form.addEventListener('submit', event => {
         event.preventDefault();
         const startWord = document.getElementById('startWord').value;
-        console.log(startWord);
         const endWord = document.getElementById('endWord').value;
-        console.log(endWord);
-        const anagrams = document.getElementById('anagrams').value;
-        console.log(anagrams);
-        const addRemove = document.getElementById('addRemove').value ? true : false;
-        console.log(addRemove);
+        const anagrams = document.querySelector('#anagrams').checked;
+        const addRemove = document.querySelector('#addRemove').checked;
         let testLadderInput = new WordLadder(startWord,endWord,dictionary,dictionaryObj);
         let testLadderOutput = testLadderInput.shortestLadder(anagrams,addRemove);
         let testLadder = testLadderOutput[0];
@@ -55,11 +52,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
         document.getElementById("graph").innerHTML = "";
         document.getElementById("graph").appendChild(chart);
-    });
+        
+
+        });
+
+
     
     window.dictionary = dictionary;
     window.dictionaryObj = dictionaryObj;
     window.WordLadder = WordLadder;
-    window.chart = chart;
+    // window.chart = chart;
     
 })

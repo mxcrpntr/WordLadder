@@ -49,19 +49,19 @@ export default class WordNode {
             endWordIsAChild = this.addAnagramChildren(endWordIsAChild,endWord);
         }
         endWordIsAChild = this.addRungChildren(endWordIsAChild,endWord);
-        const children = this.children;
+        let children = this.children;
         let endWordIdx = 0;
         for (let i = 0; i < children.length; i++) {
             if (children[i].word === endWord) {
                 endWordIdx = i;
-                break;
             }
         }
-        if (children[endWordIdx] === endWord) {
+        if (children.length > 0 && children[endWordIdx].word === endWord) {
             this.children = [children[endWordIdx]]
                             .concat(children.slice(0,endWordIdx)
                             .concat(children.slice(endWordIdx+1)));
         }
+        return endWordIsAChild;
     }
     addRungChildren(endWordIsAChild,endWord) {
         let rungChildren = this.nextRungWords();

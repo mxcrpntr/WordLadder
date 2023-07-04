@@ -53,6 +53,8 @@ export default class WordLadder {
             alreadySeenWords.push(currentNode.word);
             let visitWords = visitQueue.map(node => node.word);
             console.log(visitWords);
+            console.log(endWordInQueue);
+            console.log(endWordIsAChild);
             currentNode.children.forEach(childNode => {
                 if (!endWordInQueue) {
                     // if (childNode.word === this.endWord && n > 0) {
