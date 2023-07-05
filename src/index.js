@@ -1,7 +1,9 @@
 // import Example from "./scripts/example"
-import WordLadder from "./scripts/word_ladder"
-import Tree from "./scripts/tree"
-import * as d3 from 'd3-3';
+import WordLadder from "./scripts/word_ladder.js"
+import Tree from "./scripts/tree.js"
+import * as d3 from 'd3';
+import radialTree from "./scripts/animated_tree.js";
+// import * as d3 from "./scripts/d3-v3-min.js"
 
 document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch('./src/dictionary.txt');
@@ -13,7 +15,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         let sorted = dictionary[i].split("").sort();
         let anaArray = dictionaryObj[sorted];
         if (anaArray != undefined) {
-            // debugger
             anaArray.push(dictionary[i]);
             dictionaryObj[sorted] = anaArray;
         } else {
@@ -27,10 +28,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         const endWord = document.getElementById('endWord').value;
         const anagrams = document.querySelector('#anagrams').checked;
         const addRemove = document.querySelector('#addRemove').checked;
-        let testLadderInput = new WordLadder(startWord,endWord,dictionary,dictionaryObj);
-        let testLadderOutput = testLadderInput.shortestLadder(anagrams,addRemove);
+        try {
+            let testLadderInput = new WordLadder(startWord,endWord,dictionary,dictionaryObj);
+        
+        let testLadderOutput = testLadderInput.shortestLadder(true,true);
         let testLadder = testLadderOutput[0];
-        let startNode = testLadderOutput[1];
+        const startNode = testLadderOutput[1];
+        // debugger
+
+        
+
+
         const ul = document.querySelector("ul");
         ul.innerHTML = "";
         if (testLadder === undefined) {
@@ -44,15 +52,74 @@ document.addEventListener("DOMContentLoaded", async () => {
                 ul.appendChild(li);
             }
         }
-        const chart = Tree(startNode, {
-            label: d => d.word,
-            title: (d, n) => `${n.ancestors().reverse().map(d => d.data.word).join(".")}`, // hover text
-            link: (d, n) => "",
-            width: 1152
-        })
-        document.getElementById("graph").innerHTML = "";
-        document.getElementById("graph").appendChild(chart);
+
+        var idQueue = [startNode];
+        var currentNode = undefined;
+        var treeId = 0;
+
+        while (idQueue.length > 0) {
+            currentNode = idQueue.shift();
+            currentNode.id = treeId;
+            treeId++;
+            idQueue = idQueue.concat(currentNode.children)
+            if (currentNode.word === endWord) currentNode.id = 999999999;
+        }
+
+
+        // const chart = Tree(startNode, {
+        //     label: d => d.word,
+        //     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.word).join(".")}`, // hover text
+        //     link: (d, n) => `${n.ancestors().reverse().map(d => d.data.word).join(".")}`,
+        //     width: 1152
+        // })
+
+
+
+
+
+
         
+        radialTree(startNode);
+        
+        // document.getElementById("graph").innerHTML = "";
+        // document.getElementById("graph").appendChild(chart);
+
+
+        // const treeContainer = svg.append("g")
+
+        // const zoom = d3.zoom()
+        //     .scaleExtent([0.1, 10]) // Set the scale extent for zooming in and out
+        //     .on("zoom", () => {
+        //         treeContainer.attr("transform", d3.event.transform); // Apply the zoom transform to the tree container
+        //     });
+
+        // svg.call(zoom);
+        
+        const anchors = document.querySelectorAll('a')
+        anchors.forEach(anchor => {
+            
+            anchor.addEventListener(
+                'click', function(e) {
+                    e.preventDefault();
+                    console.log(e.currentTarget.href.baseVal)
+                    const ladder = e.currentTarget.href.baseVal.split(".")
+                    const ul = document.querySelector("ul");
+                    ul.innerHTML = "";
+                    for (let i = 0; i < ladder.length; i++) {
+                        let li = document.createElement("li");
+                        li.textContent = ladder[i];
+                        ul.appendChild(li);
+                    }
+
+                
+                
+                }, false
+            );
+        })
+        }
+        catch(err) { 
+            document.getElementById("graph").innerHTML = err.message;
+        }
 
         });
 
@@ -61,6 +128,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.dictionary = dictionary;
     window.dictionaryObj = dictionaryObj;
     window.WordLadder = WordLadder;
+    // window.startNode = startNode;
     // window.chart = chart;
     
 })

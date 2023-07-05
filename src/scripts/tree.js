@@ -111,5 +111,37 @@ export default function Tree(data, { // data is either tabular (array of objects
         .attr("stroke-width", haloWidth)
         .text((d, i) => L[i]);
   
+    const allNodes = root.descendants();
+
+    var endWordNode = undefined;
+
+    for (let i = 0; i < allNodes.length; i++) {
+      if (allNodes[i].data.id === 999999999) {
+        endWordNode = allNodes[i];
+      }
+    }
+
+    var ancestralPath = [endWordNode];
+    var parentOfEnd = endWordNode.parent;
+    while (parentOfEnd) {
+      ancestralPath.unshift(parentOfEnd);
+      parentOfEnd = parentOfEnd.parent;
+    }
+
+    for (let i = ancestralPath.length-1; i >= 0; i--) {
+      let ancestorNode = ancestralPath[i];
+      console.log(ancestorNode)
+      // ancestorNode.append("text")
+      // .attr("dy", "0.32em")
+      // .attr("x", d => d.children ? -6 : 6)
+      // .attr("text-anchor", d => d.children ? "end" : "start")
+      // .attr("paint-order", "stroke")
+      // .attr("stroke", halo)
+      // .attr("stroke-width", haloWidth)
+      // .text((d, i) => L[i]);
+
+    }
+
+
     return svg.node();
   }

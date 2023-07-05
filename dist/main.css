@@ -10,16 +10,55 @@
   color: purple;
 }
 
+body {
+  background-color: #000;
+}
+
+div#graph {
+  border: 2px solid #000;
+}
+
 ul {
   list-style: none;
 }
 
-.node {
+circle {
+  stroke: #fff;
+  stroke-width: 0;
+  fill: white;
+}
+
+circle:hover {
   stroke: #fff;
   stroke-width: 2px;
+  fill: red;
 }
 
 .link {
   fill: none;
-  stroke: #000;
+  stroke: #00ff00;
+}
+
+text {
+  text-decoration: none;
+  fill: white;
+  font-family: Garamond;
+  stroke-width: 0%;
+}
+
+text:hover {
+  text-decoration: none;
+  fill: red;
+  font-family: Garamond;
+  font-weight: bold;
+}
+
+path {
+  opacity: 100%;
+  stroke: white;
+}
+
+path:hover {
+  stroke-width: 4px;
+  stroke: red;
 }

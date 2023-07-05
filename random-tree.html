@@ -16,8 +16,12 @@
 
 </style>
 <body>
-<script src="//d3js.org/d3.v3.min.js"></script>
-<script>
+
+<script src="./src/scripts/index.js"></script>
+<script src="./src/scripts/d3-v3-min.js"></script>
+<script defer>
+
+
 
 var width = 960,
     height = 500;
@@ -25,7 +29,7 @@ var width = 960,
 var tree = d3.layout.tree()
     .size([width - 20, height - 20]);
 
-const parentNode = {id: 0, word: "cat", parent: null, children: []};
+const parentNode = startNode;
 var root = {id: parentNode.id, word: parentNode.word, parent: null, children: []},
     nodes = tree(root);
 const childArr = ["bat","eat","hat","mat","oat","pat","rat","sat","tat","vat","cot","cut","cab","cad","cam","can","cap", "car"]
@@ -65,13 +69,13 @@ var currentNode = root;
 
 
 function update() {
-  if (currentNode.word === 'carl') return clearInterval(timer);
+  if (treeQueue.length === 0) return clearInterval(timer);
 
   currentNode = treeQueue.shift();
   root.children = currentNode.parent.children
 nodes = tree(root);
 
-  console.log(currentNode.word)
+//   console.log(currentNode.word)
   // Add a new node to a random parent.
   var n = {id: currentNode.id, word: currentNode.word, parent: currentNode.parent, children: currentNode.children},
       p = currentNode.parent;

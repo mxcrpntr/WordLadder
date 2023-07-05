@@ -8,8 +8,8 @@ export default class WordLadder {
         this.startWord = startWord;
         this.endWord = endWord;
         this.dictionary = new Set(dictionaryArr);
-        if (!this.dictionary.has(startWord)) throw Error `${startWord} is not in our dictionary!`
-        if (!this.dictionary.has(endWord)) throw Error `${endWord} is not in our dictionary!`
+        if (!this.dictionary.has(startWord)) throw Error(`${startWord} is not in our dictionary!`);
+        if (!this.dictionary.has(endWord)) throw Error(`${endWord} is not in our dictionary!`);
         this.dictionaryObj = dictionaryObj;
     }
     shortestLadder(anagrams=false,addRemove=false,n=0) {
@@ -48,13 +48,9 @@ export default class WordLadder {
             }
             endWordIsAChild = currentNode.addChildren.bind(currentNode)(anagrams,addRemove,endWordIsAChild,this.endWord);
 
-            // console.log(startNode.children.map(node => node.word));
 
             alreadySeenWords.push(currentNode.word);
             let visitWords = visitQueue.map(node => node.word);
-            console.log(visitWords);
-            console.log(endWordInQueue);
-            console.log(endWordIsAChild);
             currentNode.children.forEach(childNode => {
                 if (!endWordInQueue) {
                     // if (childNode.word === this.endWord && n > 0) {
