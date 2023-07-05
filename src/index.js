@@ -3,6 +3,7 @@ import WordLadder from "./scripts/word_ladder.js"
 import Tree from "./scripts/tree.js"
 import * as d3 from 'd3';
 import radialTree from "./scripts/animated_tree.js";
+import diyLadder from "./scripts/try_ladder.js";
 // import * as d3 from "./scripts/d3-v3-min.js"
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -10,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await response.text();
     // const dictionary = new Set(data.split("\n"));
     const dictionary = data.split("\n");
+    const dictionarySet = new Set(dictionary);
     const dictionaryObj = {};
     for (let i = 0; i < dictionary.length; i++) {
         let sorted = dictionary[i].split("").sort();
@@ -21,7 +23,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             dictionaryObj[sorted] = [dictionary[i]];
         }
     }
-    const form = document.querySelector("form");
+    const ladderAnchor = document.getElementById("ladder").appendChild(document.createElement("a"));
+    ladderAnchor.innerText = "Try making your own word ladder";
+    ladderAnchor.addEventListener(
+        'click', function(e) {
+            e.preventDefault();
+            diyLadder(dictionarySet,dictionaryObj);
+        }, false
+    );
+
+    const form = document.querySelector("#ladder_input");
     form.addEventListener('submit', event => {
         event.preventDefault();
         const startWord = document.getElementById('startWord').value;
@@ -29,9 +40,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const anagrams = document.querySelector('#anagrams').checked;
         const addRemove = document.querySelector('#addRemove').checked;
         try {
-            let testLadderInput = new WordLadder(startWord,endWord,dictionary,dictionaryObj);
-        
-        let testLadderOutput = testLadderInput.shortestLadder(true,true);
+        let testLadderInput = new WordLadder(startWord,endWord,dictionary,dictionaryObj);
+        let testLadderOutput = testLadderInput.shortestLadder(anagrams,addRemove);
         let testLadder = testLadderOutput[0];
         const startNode = testLadderOutput[1];
         // debugger
@@ -39,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         
 
 
-        const ul = document.querySelector("ul");
+        const ul = document.getElementById("ladder").appendChild(document.createElement("ul"));
         ul.innerHTML = "";
         if (testLadder === undefined) {
             const li = document.createElement("li");
@@ -66,12 +76,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
 
-        // const chart = Tree(startNode, {
-        //     label: d => d.word,
-        //     title: (d, n) => `${n.ancestors().reverse().map(d => d.data.word).join(".")}`, // hover text
-        //     link: (d, n) => `${n.ancestors().reverse().map(d => d.data.word).join(".")}`,
-        //     width: 1152
-        // })
+        const chart = Tree(startNode, {
+            label: d => d.word,
+            title: (d, n) => `${n.ancestors().reverse().map(d => d.data.word).join(".")}`, // hover text
+            link: (d, n) => `${n.ancestors().reverse().map(d => d.data.word).join(".")}`,
+            width: 1152
+        })
 
 
 
@@ -79,21 +89,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
         
-        radialTree(startNode);
+        // radialTree(startNode);
         
-        // document.getElementById("graph").innerHTML = "";
-        // document.getElementById("graph").appendChild(chart);
+        document.getElementById("graph").innerHTML = "";
+        document.getElementById("graph").appendChild(chart);
 
 
-        // const treeContainer = svg.append("g")
-
-        // const zoom = d3.zoom()
-        //     .scaleExtent([0.1, 10]) // Set the scale extent for zooming in and out
-        //     .on("zoom", () => {
-        //         treeContainer.attr("transform", d3.event.transform); // Apply the zoom transform to the tree container
-        //     });
-
-        // svg.call(zoom);
         
         const anchors = document.querySelectorAll('a')
         anchors.forEach(anchor => {

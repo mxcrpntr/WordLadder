@@ -4,16 +4,35 @@
     color: $color; // $color was defined in example.scss, which we can use because it's imported before we hit this
 }
 
-body {
+body, label, text, a,li, #ladder {
     background-color: #000;
+    color: #fff;
 }
 
+div#input {
+    width: 1100px;
+    border:2px solid #fff;
+}
+
+div#ladder-and-graph {
+    height: 600px;
+    width: 1100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+div#ladder {
+    height: 100%;
+    width: 200px;
+    border:2px solid #fff;
+}
 
 div#graph {
-    // height: 500px;
-    // width: 60%;
-    border:2px solid #000;
-    // overflow: scroll;
+    height: 100%;
+    width: 900px;
+    border:2px solid #fff;
+    overflow: scroll;
 }
 
 ul {

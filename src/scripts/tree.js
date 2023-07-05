@@ -15,7 +15,7 @@ export default function Tree(data, { // data is either tabular (array of objects
     title, // given a node d, returns its hover text
     link, // given a node d, its link (if any)
     linkTarget = "_blank", // the target attribute for links (if any)
-    width = 640, // outer width, in pixels
+    width = 900, // outer width, in pixels
     height, // outer height, in pixels
     r = 3, // radius of nodes
     padding = 1, // horizontal padding for first and last column
