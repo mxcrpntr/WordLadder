@@ -4,7 +4,7 @@
     color: $color; // $color was defined in example.scss, which we can use because it's imported before we hit this
 }
 
-body, label, text, a,li, #ladder {
+body, label, text, a,li, #ladder, #graph {
     background-color: #000;
     color: #fff;
 }
@@ -12,6 +12,13 @@ body, label, text, a,li, #ladder {
 div#input {
     width: 1100px;
     border:2px solid #fff;
+}
+
+input[type=text] {
+    color: slategray;
+}
+input.clicked {
+    color: black;
 }
 
 div#ladder-and-graph {
@@ -64,7 +71,8 @@ text {
 text:hover {
     text-decoration: none;
     fill: red;
-    font-family: Garamond;
+    font-family: Baskerville;
+    font-size: 25px;
     font-weight: bold;
 }
 

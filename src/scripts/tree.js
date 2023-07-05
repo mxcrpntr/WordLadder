@@ -23,7 +23,7 @@ export default function Tree(data, { // data is either tabular (array of objects
     fillOpacity, // fill opacity for nodes
     stroke = "#555", // stroke for links
     strokeWidth = 1.5, // stroke width for links
-    strokeOpacity = 0.4, // stroke opacity for links
+    strokeOpacity = 0.9, // stroke opacity for links
     strokeLinejoin, // stroke line join for links
     strokeLinecap, // stroke line cap for links
     halo = "#fff", // color of label halo 
@@ -116,7 +116,7 @@ export default function Tree(data, { // data is either tabular (array of objects
     var endWordNode = undefined;
 
     for (let i = 0; i < allNodes.length; i++) {
-      if (allNodes[i].data.id === 999999999) {
+      if (allNodes[i].data.id === 999999999 || (!endWordNode && i === allNodes.length - 1)) {
         endWordNode = allNodes[i];
       }
     }

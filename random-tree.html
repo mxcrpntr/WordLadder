@@ -29,7 +29,7 @@ var width = 960,
 var tree = d3.layout.tree()
     .size([width - 20, height - 20]);
 
-const parentNode = startNode;
+const parentNode = {id: 0, word: "cat", parent: null, children: []};
 var root = {id: parentNode.id, word: parentNode.word, parent: null, children: []},
     nodes = tree(root);
 const childArr = ["bat","eat","hat","mat","oat","pat","rat","sat","tat","vat","cot","cut","cab","cad","cam","can","cap", "car"]

@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         let testLadderOutput = testLadderInput.shortestLadder(anagrams,addRemove);
         let testLadder = testLadderOutput[0];
         const startNode = testLadderOutput[1];
+        console.log(testLadder)
+        console.log(startNode)
         // debugger
 
         
@@ -75,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (currentNode.word === endWord) currentNode.id = 999999999;
         }
 
-
+        console.log(startNode)
         const chart = Tree(startNode, {
             label: d => d.word,
             title: (d, n) => `${n.ancestors().reverse().map(d => d.data.word).join(".")}`, // hover text
@@ -92,8 +94,26 @@ document.addEventListener("DOMContentLoaded", async () => {
         // radialTree(startNode);
         
         document.getElementById("graph").innerHTML = "";
-        document.getElementById("graph").appendChild(chart);
+        const appendedChart = document.getElementById("graph").appendChild(chart);
 
+
+        
+
+        // appendedChart.addEventListener('mousewheel', function(e) { 
+        //     if (e.ctrlKey) {
+        //         e.preventDefault();
+    
+        //         let zoom = d3.zoom().on('zoom', zoomed)
+    
+
+        //         function zoomed(e) {
+        //             d3.select('svg')
+        //                 .attr('transform', e.transform);
+        //         }
+        //         d3.select('svg').call(zoom);
+              
+        //     }
+        // }, false);
 
         
         const anchors = document.querySelectorAll('a')
@@ -124,7 +144,32 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         });
 
-
+        const textInputs = document.querySelectorAll('input[type=text]')
+        textInputs.forEach(input => {
+            
+            input.addEventListener(
+                'click', function(e) {
+                    // e.preventDefault();
+                    if (!input.classList.contains("clicked")) {
+                   var holder = input.value;
+                   input.value = "";
+                   input.classList.add("clicked");
+                    
+                   document.addEventListener(
+                    'click', function(e) {
+                        // e.preventDefault();
+                        if (e.target != input && input.value === "") {
+                            input.classList.remove("clicked")
+                            input.value = holder;
+                        }
+                    
+                    }, false
+                )
+                    }
+                
+                }, false
+            );
+        })
     
     window.dictionary = dictionary;
     window.dictionaryObj = dictionaryObj;

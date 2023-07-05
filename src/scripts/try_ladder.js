@@ -2,6 +2,7 @@ import WordNode from "./word_node";
 import WordLadder from "./word_ladder";
 
 export default function diyLadder(dictionarySet,dictionaryObj) {
+    
 const ladderBox = document.getElementById("ladder");
 ladderBox.innerHTML = "";
 const form = ladderBox.appendChild(document.createElement("form"));
@@ -17,11 +18,14 @@ var submit = document.createElement("input");
 submit.setAttribute("type","submit");
 submit.setAttribute("value","See how your ladder stacks up");
 form.appendChild(submit);
+clickClear();
 addButton.addEventListener('click', event => {
     event.preventDefault();
     var anotherInput = document.createElement("input");
+    anotherInput.setAttribute("type","text");
     anotherInput.setAttribute("value","Enter another word");
     form.insertBefore(anotherInput,addButton)
+    clickClear();
 })
 form.addEventListener('submit', event => {
     event.preventDefault();
@@ -85,7 +89,38 @@ function cleanUpMessage(message) {
     anotherAnchor.addEventListener(
     'click', function(e) {
         e.preventDefault();
-        diyLadder(dictionarySet,dictionaryObj);
+        diyLadder(new Set(dictionary),dictionaryObj);
     }, false
     );
+}
+
+function clickClear() {
+    const textInputs = document.querySelectorAll('input[type=text]')
+    textInputs.forEach(input => {
+        
+        input.addEventListener(
+            'click', function(e) {
+                // e.preventDefault();
+                if (!input.classList.contains("clicked")) {
+                var holder = input.value;
+                input.value = "";
+                input.classList.add("clicked")
+
+                console.log(input.value)
+
+
+                document.addEventListener(
+                    'click', function(e) {
+                        // e.preventDefault();
+                        if (e.target != input && input.value === "") {
+                            input.classList.remove("clicked")
+                            input.value = holder;
+                        }
+                    
+                    }, false
+                )
+                }
+            }, false
+        );
+    })
 }

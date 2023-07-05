@@ -13,12 +13,12 @@ export default class WordLadder {
         this.dictionaryObj = dictionaryObj;
     }
     shortestLadder(anagrams=false,addRemove=false,n=0) {
-        if (this.startWord.length != this.endWord.length && !addRemove) {
-            return [undefined,new WordNode(this.startWord,null,this.dictionary,this.dictionaryObj)];
-        }
         const startNode = new WordNode(this.startWord,null,this.dictionary,this.dictionaryObj);
+        if (this.startWord.length != this.endWord.length && !addRemove) {
+            throw Error(`${this.startWord} and ${this.endWord} are not the same length, please enable adding/dropping letters.`);
+        }
         if (this.startWord === this.endWord) {
-            return [[this.startWord],new WordNode(this.startWord,null,this.dictionary,this.dictionaryObj)];
+            return [[this.startWord],startNode];
         }
         let endWordIsAChild = false;
         let endWordInQueue = false;
