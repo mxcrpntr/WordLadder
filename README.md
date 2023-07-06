@@ -69,7 +69,7 @@ let anagrams = this.dictionaryObj[sorted];
 <li><b>Monday-Tuesday, July 3-4, 2023</b>: I spent Monday and Tuesday going down all sorts of d3 rabbitholes, trying out different tree visualization styles and animations before concluding that, for the purposes of showing word ladder search trees, which often number in the thousands of nodes, the aforementioned Tidy Tree model was optimal.</li>
 <li><b>Wednesday, July 5, 2023</b>: Wednesday was spent working hard on CSS styling, which I left to the last two days of this project simply because the algorithms and d3 learning took up more time than I had anticipated. I attempted to go for a very minimalist and sleek view that reflected the general lo-fi nature of the program.</li>
 <li><b>Thursday, July 6, 2023</b>: I continued styling and prepared the project for presentation to my App Academy cohort.</li>
-<li><b>Beyond</b>: I look forward to extensively cleaning up the code as it is (both by making it more efficient and tidying it up) and add multiple options for exploring the trees created. I also look forward to the idea of introducing further word-changing operations and assembling a far more extensive and helpful dictionary file (or multiple dictionary options for users).</li>
+<li><b>Beyond</b>: I look forward to extensively cleaning up the code as it is (both by making it more efficient and tidying it up) and add multiple options for exploring the trees created. I also look forward to the idea of introducing further word-modifying operations and assembling a far more extensive and helpful dictionary file (or multiple dictionary options for users).</li>
 </ul>
 
 </p>
