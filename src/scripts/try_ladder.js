@@ -5,26 +5,39 @@ export default function diyLadder(dictionarySet,dictionaryObj) {
     
 const ladderBox = document.getElementById("ladder");
 ladderBox.innerHTML = "";
+
 const form = ladderBox.appendChild(document.createElement("form"));
+
 var input = document.createElement("input");
 input.setAttribute("type","text");
 input.setAttribute("value","Enter a word");
-form.appendChild(input);
+var newLabel = document.createElement("label");
+newLabel.appendChild(input)
+form.appendChild(newLabel);
+
 var addButton = document.createElement("input");
 addButton.setAttribute("type","button");
 addButton.setAttribute("value","Add another word");
-form.appendChild(addButton);
+newLabel = document.createElement("label");
+newLabel.appendChild(addButton)
+form.appendChild(newLabel);
+
 var submit = document.createElement("input");
 submit.setAttribute("type","submit");
 submit.setAttribute("value","See how your ladder stacks up");
-form.appendChild(submit);
+newLabel = document.createElement("label");
+newLabel.appendChild(submit);
+form.appendChild(newLabel);
+
 clickClear();
 addButton.addEventListener('click', event => {
     event.preventDefault();
     var anotherInput = document.createElement("input");
     anotherInput.setAttribute("type","text");
     anotherInput.setAttribute("value","Enter another word");
-    form.insertBefore(anotherInput,addButton)
+    var innerNewLabel = document.createElement("label");
+    innerNewLabel.appendChild(anotherInput);
+    form.insertBefore(innerNewLabel,addButton.parentElement)
     clickClear();
 })
 form.addEventListener('submit', event => {

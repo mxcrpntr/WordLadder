@@ -1,19 +1,76 @@
 @import "./styles/example.scss"; // import the file from our styles so it will be bundled
 
 #main {
-    color: $color; // $color was defined in example.scss, which we can use because it's imported before we hit this
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    height: 550px; 
 }
 
-body, label, text, a,li, #ladder, #graph {
+h3 {
+    font-family: Helvetica;
+    font-size: 175px;
+    font-weight: 100;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    text-align: center;
+}
+
+body, label, text, a,li, #ladder, #graph, h2, h1 {
     background-color: #000;
     color: #fff;
+    border: none;
+    font-family: Helvetica;
 }
 
-div#input {
-    width: 1100px;
-    border:2px solid #fff;
+
+div#input.showing {
+    display: block;
+    flex-direction: column;
+    justify-content: center;
+    width: 300px;
+    height: 100%;
+    // border:2px solid #fff;
+}
+div#input > form, div#ladder > form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-wrap: nowrap;
 }
 
+div#input > form > label,div#ladder > form > label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin: 10px;
+    border: 1px solid white;
+    font-family: Helvetica;
+}
+div#input > form > label > input[type=text], div#ladder > form > label > input[type=text] {
+    // padding: 15px;
+    justify-content: center;
+    text-align: center;
+    margin: auto;
+    width: 150px;
+    font-family: Helvetica;
+}
+div#input > form > label > input[type=checkbox]{
+    margin: 10px;
+    width: 10px;
+    font-family: Helvetica;
+}
+div#input > form > label > input[type=submit], div#input > form > label > input[type=button], div#ladder > form > label > input[type=submit], div#ladder > form > label > input[type=button]{
+    margin: auto;
+    font-family: Helvetica;
+}
 input[type=text] {
     color: slategray;
 }
@@ -21,25 +78,31 @@ input.clicked {
     color: black;
 }
 
-div#ladder-and-graph {
-    height: 600px;
-    width: 1100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+// div#ladder-and-graph {
+//     height: 600px;
+//     width: 1100px;
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: center;
+// }
+
+div#ladder.showing {
+    display: block;
+    height: 550px;
+    width: 300px;
+    // border:2px solid #fff;
 }
 
-div#ladder {
-    height: 100%;
-    width: 200px;
-    border:2px solid #fff;
-}
 
-div#graph {
+
+div#graph.showing {
+    display: block;
+    position: relative;
     height: 100%;
     width: 900px;
     border:2px solid #fff;
     overflow: scroll;
+    z-index: 1;
 }
 
 ul {
@@ -59,21 +122,45 @@ circle {
   
 .link {
     fill: none;
-    stroke: #00ff00;
+    stroke: #fff;
 }
 
-text {
+text,h1 {
     text-decoration: none;
+    color: white;
     fill: white;
-    font-family: Garamond;
+    font-family:Helvetica;
+    font-weight: 400;
     stroke-width: 0%;
+    border: none;
+    // z-index: 1;
 }
 text:hover {
     text-decoration: none;
-    fill: red;
-    font-family: Baskerville;
+    fill: yellow;
+    font-family: Helvetica;
     font-size: 25px;
     font-weight: bold;
+    text-shadow: red 2px 0px 1px;
+}
+
+text.shortLadder {
+    // text-decoration: none;
+    fill: red;
+    // z-index: 2;
+    font-family: Helvetica;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: blue 2px 0px 2px;
+}
+text.shortLadder:hover {
+    // text-decoration: none;
+    fill: yellow;
+    // z-index: 2;
+    font-family: Helvetica;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: red 2px 0px 2px;
 }
 
 path {
@@ -83,4 +170,75 @@ path {
 path:hover {
     stroke-width: 4px;
     stroke: red;
+}
+
+.hidden {
+    display: none;
+}
+
+#left,#right {
+    height: 200px;
+}
+
+div#currentLadder {
+    position: absolute;
+    z-index: 2;
+    top: -40px;
+}
+
+div#return {
+    position: absolute;
+    z-index: 2;
+    top: 560px;
+}
+
+
+h4 {
+    font-family: Helvetica;
+    font-weight: 100;
+}
+
+
+div#info.showing {
+    position: absolute;
+    background-color: #000;
+    border: 3px solid #fff;
+    width: 450px;
+    height: 95%;
+    top: 3%;
+    left: 0;
+    right: 0;
+    padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: scroll;
+}
+
+div#popup.showing {
+    position: absolute;
+    background-color: #000;
+    border: 3px solid #fff;
+    width: 450px;
+    height: 50%;
+    top: 15%;
+    left: 0;
+    right: 0;
+    padding: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: scroll;
+}
+
+div#images {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+}
+
+div#info.showing > p {
+    padding: 10px;
+}
+
+text.word {
+    font-size: 13px;
 }
