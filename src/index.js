@@ -130,15 +130,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         returnAnchor.addEventListener('click', function(e) {
             e.preventDefault();
-            let currentLadderDivs = document.querySelectorAll("#currentLadder")
-            if (currentLadderDivs) {
-                for (let i = 1; i < currentLadderDivs.length; i++) {
-                    currentLadderDivs[i].remove();
-                }
-                let currentLadderDiv = currentLadderDivs[0];
+            let currentLadderDiv = document.getElementById("currentLadder")
+            console.log(currentLadderDiv)
+            if (currentLadderDiv) {
+                console.log("hey")
                 currentLadderDiv.innerHTML = "";
-                console.log(currentLadderDiv.innerHTML)
-
+                
             }
             toggleHideDiv("graph");
             toggleHideDiv("input");
@@ -176,7 +173,9 @@ document.addEventListener("DOMContentLoaded", async () => {
               
         //     }
         // }, false);
-
+        if (document.querySelector("#currentLadder")) {
+            document.querySelector("#currentLadder").remove();
+        }
         const currentLadderDiv = document.querySelector('#main').appendChild(document.createElement("div"));
         currentLadderDiv.setAttribute("id","currentLadder");
         if (testLadder) {
