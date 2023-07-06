@@ -192,7 +192,23 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
         }
         catch(err) { 
-            document.getElementById("graph").innerHTML = err.message;
+            var popUp = document.getElementById("popup");
+            popUp.innerHTML = err.message;
+            popUp.appendChild(document.createElement("br"));
+
+            var closeAnchorTwo = document.createElement("a");
+            closeAnchorTwo.innerText = "(close)";
+            popUp.appendChild(closeAnchorTwo);
+
+            closeAnchorTwo.addEventListener(
+                'click', function(e) {
+                    e.preventDefault();
+                    toggleHideDiv("popup");
+                    popUp.innerHTML = "";
+                }, false
+            );
+
+            toggleHideDiv("popup");
         }
 
         });
