@@ -38,7 +38,9 @@ Users are currently able to:
 <ul>
 <li><b>Thursday, June 29, 2023</b>: I wrote skeletal, but working, JavaScript code for the WordNode nodes and WordLadder tree/ladder generators.</li>
 <li><b>Friday, June 30, 2023</b>: I streamlined this code, focusing especially on changing the finding of anagrams in a dictionary from an <i>n</i>! operation to a (nearly) constant-time operation. This involved an initialization operation of turning the dictionary text file into a JavaScript Object whose keys are sorted arrays of letters and whose values are arrays of dictionary words whose letters sort to the key array:
+
 <br>
+
 <code>const response = await fetch('./src/dictionary.txt');
 const data = await response.text();
 const dictionary = data.split("\n");
@@ -55,6 +57,7 @@ for (let i = 0; i < dictionary.length; i++) {
     }
 }
 </code>
+
 <br>
 I then was able to search for all anagrams of any dictionary word with a constant-time lookup in merely two lines of code:
 
