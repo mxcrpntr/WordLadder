@@ -8,15 +8,20 @@
     <link rel="stylesheet" href="./dist/main.css" />
     <script src="./dist/main.js"></script>
     <script src="./src/scripts/d3-v3-min.js"></script>
-    <title>Project Name</title>
+    <title>Word Ladder Generator</title>
   </head>
 
   <body>
 
+    <h1>Word Ladder Generator</h1>
 
     <div id="main">
-      <div id="input">
+      <div id="left"><h3>{</h3></div>
+      <div id="input" class="showing">
         <form id="ladder_input" action="" method="POST">
+          <!-- <label> -->
+          <h2>Enter two words to generate a word ladder:</h2>
+        <!-- </label> -->
           <label>
           <input type="text" value="Starting word" id="startWord">
           </label>
@@ -29,15 +34,20 @@
           <label>Allow adding/dropping letters:
           <input type="checkbox" value="true" id="addRemove">
           </label>
+          <label>
           <input type="submit" value="Generate shortest ladder">
+        </label>
+          <h2>or</h2>
+          <label>
+          <input type="button" value="Try making your own word ladder" id="diyLadder">
+        </label>
         </form>
       </div>
-        <div id="ladder-and-graph">
-          <div id="ladder">
-          </div>
-          <div id="graph">
-          </div>
+      <div id="ladder" class="hidden">
       </div>
+      <div id="graph" class="hidden">
+      </div>
+      <div id="right"><h3>}</h3></div>
     </div>
   </body>
 

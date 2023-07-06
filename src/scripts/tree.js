@@ -93,7 +93,8 @@ export default function Tree(data, { // data is either tabular (array of objects
       .join("a")
         .attr("xlink:href", link == null ? null : d => link(d.data, d))
         .attr("target", link == null ? null : linkTarget)
-        .attr("transform", d => `translate(${d.y},${d.x})`);
+        .attr("transform", d => `translate(${d.y},${d.x})`)
+        .attr("id", link == null ? null : d => link(d.data, d));
   
     node.append("circle")
         .attr("fill", d => d.children ? stroke : fill)
