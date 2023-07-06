@@ -242,3 +242,9 @@ div#info.showing > p {
 text.word {
     font-size: 13px;
 }
+
+div#return2 {
+    position: absolute;
+    z-index: 2;
+    top: -10px;
+}

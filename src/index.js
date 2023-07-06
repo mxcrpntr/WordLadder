@@ -41,6 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             e.preventDefault();
             toggleHideDiv("info");
             if (document.getElementById("info").classList.contains("showing")) {
+                document.getElementById("animation").innerHTML = "";
                 animateTree();
             }
         }, false
@@ -146,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             lastNodeText.classList.add("shortLadder");
             lastNodeText.scrollIntoView();
 
-            var shrinkingLadder = testLadder;
+            var shrinkingLadder = [...testLadder];
 
             while (shrinkingLadder.length > 1) {
                 shrinkingLadder.pop();
@@ -173,6 +174,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         const currentLadderDiv = document.querySelector('#main').appendChild(document.createElement("div"));
         currentLadderDiv.setAttribute("id","currentLadder");
+        if (testLadder) {
+            currentLadderDiv.appendChild(document.createElement("h4")).innerText = testLadder.join(" => ");
+        } else {
+            var unfoundMessage = `No ladder found. Explore our search tree below.`;
+            currentLadderDiv.appendChild(document.createElement("h4")).innerText = unfoundMessage;
+        }
 
         const anchors = document.querySelector('#graph').querySelectorAll('a')
         anchors.forEach(anchor => {

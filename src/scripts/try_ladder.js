@@ -29,6 +29,20 @@ newLabel = document.createElement("label");
 newLabel.appendChild(submit);
 form.appendChild(newLabel);
 
+const returnDiv2 = document.getElementById("main").appendChild(document.createElement("div"))
+        returnDiv2.setAttribute("id","return2");
+        const returnAnchor2 = document.createElement("a");
+        returnAnchor2.innerText = "return to the previous form";
+        returnDiv2.appendChild(returnAnchor2);
+
+        returnAnchor2.addEventListener('click', function(e) {
+            e.preventDefault();
+            toggleHideDiv("ladder");
+            toggleHideDiv("input");
+            returnDiv2.remove();
+
+        }, false);
+
 clickClear();
 addButton.addEventListener('click', event => {
     event.preventDefault();
@@ -55,7 +69,7 @@ form.addEventListener('submit', event => {
     for (let i = 0; i < inputValues.length; i++) {
         let ladderWord = inputValues[i].toLowerCase()
         if (!dictionarySet.has(ladderWord)) {
-            cleanUpMessage(`Sorry, ${inputValues[i]} is not in our dictionary at the present time.`);
+            cleanUpMessage(`Sorry, "${inputValues[i]}" is not in our dictionary at the present time.`);
             break
         } else if (i === 0) {
             previousWord = ladderWord;
@@ -71,7 +85,7 @@ form.addEventListener('submit', event => {
                     previousNode.addAddRemoveChildren(false,"fuck")
                     let previousChildren = previousNode.children.map(child => child.word)
                     if (!previousNode.children || !previousChildren.includes(ladderWord)) {
-                        cleanUpMessage(`${inputValues[i]} is not one operation away from ${previousWord}`);
+                        cleanUpMessage(`"${inputValues[i]}" is not one operation away from "${previousWord}"`);
                         break
                     }
                 }
@@ -85,9 +99,10 @@ form.addEventListener('submit', event => {
         const ourShortestLadder = ourShortestLadderOutput[0];
         const ourShortestTree = ourShortestLadderOutput[1];
         if (ourShortestLadder.length === inputValues.length) {
-            cleanUpMessage(`Great job, your ladder from ${inputValues[0].toLowerCase()} to ${previousWord} was just as short as the shortest one we could generate <br>`);
+            cleanUpMessage(`Great job, your ladder from "${inputValues[0].toLowerCase()}" to "${previousWord}" was just as short as the shortest one we could generate: "${ourShortestLadder.join(`" => "`)}"`);
         } else {
-            cleanUpMessage(`Nice job. However, we were able to find a ladder from ${inputValues[0].toLowerCase()} to ${previousWord} that was ${inputValues.length - ourShortestLadder.length} steps shorter than yours. If you would like to see our shortest ladder, just enter the two words in the form above (making sure to allow anagrams and adding/removing letters if applicable).`);
+            var fewerSteps = inputValues.length - ourShortestLadder.length;
+            cleanUpMessage(`Nice job. However, we were able to find a ladder from "${inputValues[0].toLowerCase()}" to "${previousWord}" that was ${fewerSteps} step${fewerSteps != 1 ? "s" : ""} shorter than yours. If you would like to see our shortest ladder, just enter the two words in the form above (making sure to allow anagrams and adding/removing letters if applicable).`);
         }
     }
 })
@@ -96,13 +111,16 @@ form.addEventListener('submit', event => {
 
 
 function cleanUpMessage(message) {
-    document.getElementById("ladder").innerText = message
-    const anotherAnchor = document.getElementById("ladder").appendChild(document.createElement("a"));
-    anotherAnchor.innerText = "Try making another word ladder";
+    console.log("hey")
+    document.getElementById("popup").innerText = message;
+    document.getElementById("popup").appendChild(document.createElement("br"))
+    const anotherAnchor = document.getElementById("popup").appendChild(document.createElement("a"));
+    anotherAnchor.innerText = "(close)";
+    toggleHideDiv("popup");
     anotherAnchor.addEventListener(
     'click', function(e) {
         e.preventDefault();
-        diyLadder(new Set(dictionary),dictionaryObj);
+        toggleHideDiv("popup");
     }, false
     );
 }
@@ -136,4 +154,18 @@ function clickClear() {
             }, false
         );
     })
+}
+
+function toggleHideDiv(divString) {
+    var x = document.getElementById(divString);
+    // debugger
+    if (x.classList.contains("hidden")) {
+        // console.log(divString)
+        x.classList.remove("hidden")
+        x.classList.add("showing")
+    } else {
+        // console.log(divString)
+        x.classList.remove("showing")
+        x.classList.add("hidden")
+    }
 }
