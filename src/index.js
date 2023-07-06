@@ -4,6 +4,7 @@ import Tree from "./scripts/tree.js"
 import * as d3 from 'd3';
 import radialTree from "./scripts/animated_tree.js";
 import diyLadder from "./scripts/try_ladder.js";
+import animateTree from "./scripts/animated.js";
 // import * as d3 from "./scripts/d3-v3-min.js"
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -33,6 +34,26 @@ document.addEventListener("DOMContentLoaded", async () => {
             diyLadder(dictionarySet,dictionaryObj);
         }, false
     );
+    
+    const infoAnchor = document.getElementById("infoAnchor");
+    infoAnchor.addEventListener(
+        'click', function(e) {
+            e.preventDefault();
+            toggleHideDiv("info");
+            if (document.getElementById("info").classList.contains("showing")) {
+                animateTree();
+            }
+        }, false
+    );
+    
+    const closeAnchor = document.getElementById("close");
+    closeAnchor.addEventListener(
+        'click', function(e) {
+            e.preventDefault();
+            toggleHideDiv("info");
+        }, false
+    );
+
 
     const form = document.querySelector("#ladder_input");
     form.addEventListener('submit', event => {

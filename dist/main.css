@@ -121,7 +121,7 @@ circle:hover {
 
 .link {
   fill: none;
-  stroke: #00ff00;
+  stroke: #fff;
 }
 
 text, h1 {
@@ -192,4 +192,27 @@ div#return {
 h4 {
   font-family: Helvetica;
   font-weight: 100;
+}
+
+div#info.showing {
+  position: absolute;
+  background-color: #000;
+  border: 3px solid #fff;
+  width: 450px;
+  height: 95%;
+  top: 3%;
+  left: 0;
+  right: 0;
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: scroll;
+}
+
+div#info.showing > p {
+  padding: 10px;
+}
+
+text.word {
+  font-size: 13px;
 }

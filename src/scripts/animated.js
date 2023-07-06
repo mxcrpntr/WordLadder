@@ -1,29 +1,8 @@
-<!DOCTYPE html>
-<meta charset="utf-8">
-<style>
-
-    
-
-.node {
-  stroke: #fff;
-  stroke-width: 2px;
-}
-
-.link {
-  fill: none;
-  stroke: #000;
-}
-
-</style>
-<body>
-
-<script src="./src/scripts/index.js"></script>
-<script src="./src/scripts/d3-v3-min.js"></script>
-<script defer>
 
 
 
-var width = 450,
+export default function animateTree() {
+    var width = 450,
     height = 250;
 
 var tree = d3.layout.tree()
@@ -37,8 +16,6 @@ for (let i = 0; i < childArr.length; i++) {
     let newChild = {id: i+1, word: childArr[i], parent: root, children: []};
     parentNode.children = parentNode.children.concat([newChild]);
 }
-parentNode.children[parentNode.children.length - 1].children.push( {id: childArr.length + 1, word: "carl", parent: parentNode.children[parentNode.children.length - 1], children: []})
-console.log(parentNode);
 
 
 
@@ -52,6 +29,8 @@ root.py = root.y;
 
 var diagonal = d3.svg.diagonal();
 
+d3.select("#animation").innerHTML = ""
+
 var svg = d3.select("#animation").append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -61,7 +40,7 @@ var svg = d3.select("#animation").append("svg")
 var node = svg.selectAll(".node"),
     link = svg.selectAll(".link");
 
-var duration = 300,
+var duration = 4000,
     timer = setInterval(update, duration);
 
 var treeQueue = parentNode.children;
@@ -75,17 +54,13 @@ function update() {
   root.children = currentNode.parent.children
 nodes = tree(root);
 
-//   console.log(currentNode.word)
   // Add a new node to a random parent.
   var n = {id: currentNode.id, word: currentNode.word, parent: currentNode.parent, children: currentNode.children},
       p = currentNode.parent;
   if (p.children) p.children.push(n); else p.children = [n];
   nodes.push(n);
-  console.log(n.word)
-  console.log(p.children)
 
   treeQueue = treeQueue.concat(currentNode.children);
-    console.log(treeQueue.map(node => node.word))
   // Recompute the layout and data join.
   node = node.data(tree.nodes(root), function(d) { return d.id; });
   link = link.data(tree.links(nodes), function(d) { return d.source.id + "-" + d.target.id; });
@@ -99,8 +74,8 @@ nodes = tree(root);
 
 node.enter().append("text")
     .attr("class", "word")
-    .attr("x", function(d) { return d.parent.px + 10; })
-    .attr("y", function(d) { return d.parent.py + 5;})
+    .attr("x", function(d) { return d.parent.px + 3; })
+    .attr("y", function(d) { return d.parent.py + 10;})
     .text(function(d) { return d.word; });
 
   // Add entering links in the parent’s old position.
@@ -123,10 +98,7 @@ node.enter().append("text")
       .attr("cy", function(d) { return d.py = d.y; });
 
   t.selectAll(".word")
-    .attr("x", function(d) { return d.px + 10; })
-    .attr("y", function(d) { return d.py + 5; });
+    .attr("x", function(d) { return d.px + 3; })
+    .attr("y", function(d) { return d.py + 10; });
 }
-
-
-
-</script>
+}

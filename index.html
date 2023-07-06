@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="./dist/main.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <script src="./dist/main.js"></script>
     <script src="./src/scripts/d3-v3-min.js"></script>
     <title>Word Ladder Generator</title>
@@ -13,7 +16,7 @@
 
   <body>
 
-    <h1>Word Ladder Generator</h1>
+    <h1>Word Ladder<a id="infoAnchor"><sup><small>?</small></sup><a> Generator</h1>
 
     <div id="main">
       <div id="left"><h3>{</h3></div>
@@ -48,6 +51,57 @@
       <div id="graph" class="hidden">
       </div>
       <div id="right"><h3>}</h3></div>
+    </div>
+    <div id="info" class="hidden">
+      <h2><i>What is a word ladder?</i></h2>
+      <p>
+        Traditionally, a word ladder is a series of words that connect one word to 
+        another word by switching one letter at a time. A ladder connecting "APE" to "MAN" 
+        might proceed like "APE" => "APT" => "OPT => "OAT" => "MAT" => "MAN", while a 
+        ladder connecting "GOOD" to "EVIL" could go "GOOD" => "FOOD" => "FOOL" => ...hmmm... 
+        maybe there's not a ladder connecting those...
+      </p>
+      <h2><i>Why are word ladders interesting?</i></h2>
+      <p>
+        While they may seem merely like a kid's cereal box challenge, word ladders 
+        journey through their respective dictionaries in fascinating ways that buck 
+        etymological, definitional, and rhyming connections in favor of modular ones, 
+        often to surprising ends. The way our brains try to construct these ladders 
+        also mimics the behavior of a breadth-first search through a tree data model: 
+        the starting word can be taken to be a root node with its children being all the 
+        words that are one letter away from it, and, hopefully, the ending word being one 
+        of its descendants.
+      </p>
+      <div id="animation"></div>
+      <p>
+        These ladders, modeled like trees, can inadvertently connect vast networks of 
+        words within a single dictionary. The inclusion of operations like anagramming 
+        and adding or dropping letters can connect even vaster swaths of words. (That is, 
+        we couldn't allow for "GOOD" => "MOOD" => "MOLD" => "MILD" => "MILE" => "VILE" => "EVIL" 
+        before allowing for anagramming.)
+      </p>
+      <h2><i>Okay sure. What's this site then?</i></h2>
+      <p>
+        With the help of a sometimes strange (and very PG) dictionary .txt file 
+        and some pretty efficient dictionary traversal algorithms, I have put together a 
+        combination word ladder generator and visualizer of sorts. Try it out by putting some 
+        regular old words in and seeing if it can connect them, and take a look at the tree 
+        it generates when it can (or even sometimes can't) find the shortest possible path between 
+        your inputs.
+      </p>
+      <br>
+      <a id="close">(close)</a>
+
+    </div>
+    <div id="popup" class="hidden">
+    </div>
+
+    <div id="sources" class="hidden">
+      <p>
+        For this project I made use of d3 code from Mike Bostock's "Tree, Tidy" 
+        article on Observable (https://observablehq.com/@d3/tree) and a dictionary 
+        text file from App Academy. 
+      </p>
     </div>
   </body>
 
