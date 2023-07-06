@@ -10,7 +10,6 @@ import animateTree from "./scripts/animated.js";
 document.addEventListener("DOMContentLoaded", async () => {
     const response = await fetch('./src/dictionary.txt');
     const data = await response.text();
-    // const dictionary = new Set(data.split("\n"));
     const dictionary = data.split("\n");
     const dictionarySet = new Set(dictionary);
     const dictionaryObj = {};
@@ -131,9 +130,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         returnAnchor.addEventListener('click', function(e) {
             e.preventDefault();
-            let currentLadderDiv = document.getElementById("currentLadder")
-            if (currentLadderDiv) {
-                currentLadderDiv.innerHTML = ""
+            let currentLadderDivs = document.querySelectorAll("#currentLadder")
+            if (currentLadderDivs) {
+                for (let i = 1; i < currentLadderDivs.length; i++) {
+                    currentLadderDivs[i].remove();
+                }
+                let currentLadderDiv = currentLadderDivs[0];
+                currentLadderDiv.innerHTML = "";
+                console.log(currentLadderDiv.innerHTML)
+
             }
             toggleHideDiv("graph");
             toggleHideDiv("input");
