@@ -207,6 +207,7 @@ div#info.showing {
   margin-left: auto;
   margin-right: auto;
   overflow: scroll;
+  z-index: 2;
 }
 
 div#popup.showing {
@@ -222,6 +223,28 @@ div#popup.showing {
   margin-left: auto;
   margin-right: auto;
   overflow: scroll;
+}
+
+div#ladderPopUpButtons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+div#ladderPopUp.showing {
+  position: absolute;
+  background-color: #000;
+  border: 3px solid #fff;
+  width: 330px;
+  max-height: 75%;
+  top: 15%;
+  left: 0;
+  right: 0;
+  padding: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: scroll;
+  z-index: 2;
 }
 
 div#images {
@@ -242,4 +265,37 @@ div#return2 {
   position: absolute;
   z-index: 2;
   top: -10px;
+}
+
+a.boldAnchor:hover {
+  transform: scale(1.3);
+  transition: 1s;
+  cursor: pointer;
+}
+
+a.rotate:hover {
+  rotate: 360deg;
+}
+
+.rotate {
+  -webkit-animation: rotate 2s linear infinite;
+  animation: colorRotate 0.5s linear 0s infinite;
+}
+
+@keyframes colorRotate {
+  from {
+    color: #6666ff;
+  }
+  10% {
+    color: #0099ff;
+  }
+  50% {
+    color: #00ff00;
+  }
+  75% {
+    color: #ff3399;
+  }
+  100% {
+    color: #6666ff;
+  }
 }

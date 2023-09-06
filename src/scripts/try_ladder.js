@@ -57,12 +57,10 @@ addButton.addEventListener('click', event => {
 form.addEventListener('submit', event => {
     event.preventDefault();
     const inputs = form.querySelectorAll("input");
-    console.log(inputs)
     const inputValues = [];
     for (let i = 0; i < inputs.length - 2; i++) {
         inputValues.push(inputs[i].value);
     }
-    console.log(inputValues);
     var previousWord = undefined;
     let anagrams = false;
     let addRemove = false;
@@ -79,8 +77,6 @@ form.addEventListener('submit', event => {
                 anagrams = true;
                 let sorted = ladderWord.split("").sort();
                 if (previousWord.split("").sort().join("") != sorted.join("")) {
-                    console.log(sorted)
-                    console.log(previousWord.split("").sort())
                     addRemove = true;
                     previousNode.addAddRemoveChildren(false,"fuck")
                     let previousChildren = previousNode.children.map(child => child.word)
@@ -111,7 +107,6 @@ form.addEventListener('submit', event => {
 
 
 function cleanUpMessage(message) {
-    console.log("hey")
     document.getElementById("popup").innerText = message;
     document.getElementById("popup").appendChild(document.createElement("br"))
     const anotherAnchor = document.getElementById("popup").appendChild(document.createElement("a"));
@@ -137,7 +132,6 @@ function clickClear() {
                 input.value = "";
                 input.classList.add("clicked")
 
-                console.log(input.value)
 
 
                 document.addEventListener(
@@ -160,11 +154,9 @@ function toggleHideDiv(divString) {
     var x = document.getElementById(divString);
     // debugger
     if (x.classList.contains("hidden")) {
-        // console.log(divString)
         x.classList.remove("hidden")
         x.classList.add("showing")
     } else {
-        // console.log(divString)
         x.classList.remove("showing")
         x.classList.add("hidden")
     }

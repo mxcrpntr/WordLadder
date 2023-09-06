@@ -40,7 +40,7 @@ var svg = d3.select("#animation").append("svg")
 var node = svg.selectAll(".node"),
     link = svg.selectAll(".link");
 
-var duration = 4000,
+var duration = 2000,
     timer = setInterval(update, duration);
 
 var treeQueue = parentNode.children;

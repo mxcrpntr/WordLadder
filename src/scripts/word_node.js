@@ -133,18 +133,15 @@ export default class WordNode {
 }
 
 function anagrams(word) {
-    // console.log(`lookin up anagrams for ${word}`)
     const anagrams = [];
     // perms(word).forEach(str => {
     //     if (this.dictionary.has(str) && str != word) {
     //         anagrams.push(str);
     //     }
     // })
-    console.log('start')
     this.dictionary.forEach(word2 => {
         if(isAnagram(word,word2)) anagrams.push(word2);
     })
-    console.log('end')
     return anagrams;
 }
 

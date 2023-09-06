@@ -131,7 +131,6 @@ export default function Tree(data, { // data is either tabular (array of objects
 
     for (let i = ancestralPath.length-1; i >= 0; i--) {
       let ancestorNode = ancestralPath[i];
-      console.log(ancestorNode)
       // ancestorNode.append("text")
       // .attr("dy", "0.32em")
       // .attr("x", d => d.children ? -6 : 6)

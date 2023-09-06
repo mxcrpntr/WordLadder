@@ -67,9 +67,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         let testLadderOutput = testLadderInput.shortestLadder(anagrams,addRemove);
         let testLadder = testLadderOutput[0];
         const startNode = testLadderOutput[1];
-        console.log(testLadder)
-        console.log(startNode)
-        // debugger
 
         
 
@@ -100,7 +97,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (currentNode.word === endWord) currentNode.id = 999999999;
         }
 
-        console.log(startNode)
         const chart = Tree(startNode, {
             label: d => d.word,
             title: (d, n) => `${n.ancestors().reverse().map(d => d.data.word).join(".")}`, // hover text
@@ -119,88 +115,95 @@ document.addEventListener("DOMContentLoaded", async () => {
         document.getElementById("graph").innerHTML = "";
         const appendedChart = document.getElementById("graph").appendChild(chart);
 
-        toggleHideDiv("input");
-        toggleHideDiv("graph");
-
-        const returnDiv = document.getElementById("main").appendChild(document.createElement("div"))
-        returnDiv.setAttribute("id","return");
-        const returnAnchor = document.createElement("a");
-        returnAnchor.innerText = "return to the previous form";
-        returnDiv.appendChild(returnAnchor);
-
-        returnAnchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            let currentLadderDiv = document.getElementById("currentLadder")
-            console.log(currentLadderDiv)
-            if (currentLadderDiv) {
-                console.log("hey")
-                currentLadderDiv.innerHTML = "";
-                
-            }
-            toggleHideDiv("graph");
-            toggleHideDiv("input");
-            returnDiv.remove();
-
-        }, false);
-
+        let ladderPopUpText = ""
         if (testLadder) {
-            const lastNodeText = document.getElementById(testLadder.join(".")).getElementsByTagName("text")[0];
-            console.log(lastNodeText);
-            lastNodeText.classList.add("shortLadder");
-            lastNodeText.scrollIntoView();
-
-            var shrinkingLadder = [...testLadder];
-
-            while (shrinkingLadder.length > 1) {
-                shrinkingLadder.pop();
-                console.log(shrinkingLadder);
-                var rungNodeText = document.getElementById(shrinkingLadder.join(".")).getElementsByTagName("text")[0];
-                rungNodeText.classList.add("shortLadder");
-            }
-        }   
-        // appendedChart.addEventListener('mousewheel', function(e) { 
-        //     if (e.ctrlKey) {
-        //         e.preventDefault();
-    
-        //         let zoom = d3.zoom().on('zoom', zoomed)
-    
-
-        //         function zoomed(e) {
-        //             d3.select('svg')
-        //                 .attr('transform', e.transform);
-        //         }
-        //         d3.select('svg').call(zoom);
-              
-        //     }
-        // }, false);
-        if (document.querySelector("#currentLadder")) {
-            document.querySelector("#currentLadder").remove();
-        }
-        const currentLadderDiv = document.querySelector('#main').appendChild(document.createElement("div"));
-        currentLadderDiv.setAttribute("id","currentLadder");
-        if (testLadder) {
-            currentLadderDiv.appendChild(document.createElement("h4")).innerText = testLadder.join(" => ");
+            ladderPopUpText = `The shortest ladder we could find is:\n\n${testLadder.join('\n↓\n')}\n\n Would you like to explore the word tree graph that led us to this ladder?`;
         } else {
-            var unfoundMessage = `No ladder found. Explore our search tree below.`;
-            currentLadderDiv.appendChild(document.createElement("h4")).innerText = unfoundMessage;
+            ladderPopUpText = `We were unable to find a ladder connecting "${startWord}" to "${endWord}." Would you like to explore the word tree graph that we created in our search?`;
         }
 
-        const anchors = document.querySelector('#graph').querySelectorAll('a')
-        anchors.forEach(anchor => {
-            
-            anchor.addEventListener(
-                'click', function(e) {
-                    e.preventDefault();
-                    console.log(e.currentTarget.href.baseVal)
-                    const ladder = e.currentTarget.href.baseVal.split(".").join(" => ")
-                    // const ul = document.createElement("ul");
+        document.querySelector("#ladderPopUp > p").innerText = ladderPopUpText
+
+        toggleHideDiv("ladderPopUp")
+
+        const yesAnchor = document.querySelector("#ladderPopUp > div > a:first-child")
+        const noAnchor = document.querySelector("#ladderPopUp > div > a:last-child")
+
+        const yesAnchorFunction = (e) => {
+            e.preventDefault();
+            toggleHideDiv("input");
+            toggleHideDiv("graph");
+            toggleHideDiv("ladderPopUp");
+    
+            const returnDiv = document.getElementById("main").appendChild(document.createElement("div"))
+            returnDiv.setAttribute("id","return");
+            const returnAnchor = document.createElement("a");
+            returnAnchor.innerText = "return to the previous form";
+            returnDiv.appendChild(returnAnchor);
+    
+            returnAnchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                let currentLadderDiv = document.getElementById("currentLadder")
+                if (currentLadderDiv) {
                     currentLadderDiv.innerHTML = "";
-                    currentLadderDiv.appendChild(document.createElement("h4")).innerText = ladder;
+                }
+                toggleHideDiv("graph");
+                toggleHideDiv("input");
+                returnDiv.remove();
+    
+            }, false);
+    
+            if (testLadder) {
+                const lastNodeText = document.getElementById(testLadder.join(".")).getElementsByTagName("text")[0];
+                lastNodeText.classList.add("shortLadder");
+                lastNodeText.scrollIntoView();
+    
+                var shrinkingLadder = [...testLadder];
+    
+                while (shrinkingLadder.length > 1) {
+                    shrinkingLadder.pop();
+                    var rungNodeText = document.getElementById(shrinkingLadder.join(".")).getElementsByTagName("text")[0];
+                    rungNodeText.classList.add("shortLadder");
+                }
+            }   
+            if (document.querySelector("#currentLadder")) {
+                document.querySelector("#currentLadder").remove();
+            }
+            const currentLadderDiv = document.querySelector('#main').appendChild(document.createElement("div"));
+            currentLadderDiv.setAttribute("id","currentLadder");
+            if (testLadder) {
+                currentLadderDiv.appendChild(document.createElement("h4")).innerText = testLadder.join(" => ");
+            } else {
+                var unfoundMessage = `No ladder found. Explore our search tree below.`;
+                currentLadderDiv.appendChild(document.createElement("h4")).innerText = unfoundMessage;
+            }
+    
+            const anchors = document.querySelector('#graph').querySelectorAll('a')
+            anchors.forEach(anchor => {
                 
-                
-                }, false
-            );
-        })
+                anchor.addEventListener(
+                    'click', function(e) {
+                        e.preventDefault();
+                        const ladder = e.currentTarget.href.baseVal.split(".").join(" => ")
+                        // const ul = document.createElement("ul");
+                        currentLadderDiv.innerHTML = "";
+                        currentLadderDiv.appendChild(document.createElement("h4")).innerText = ladder;
+                    
+                    
+                    }, false
+                );
+            })
+            yesAnchor.removeEventListener('click', yesAnchorFunction)
+        }
+
+        yesAnchor.addEventListener('click', yesAnchorFunction, false)
+        const noAnchorFunction = (e) => {
+            e.preventDefault();
+
+            toggleHideDiv("ladderPopUp");
+            noAnchor.removeEventListener('click', noAnchorFunction)
+        }
+        noAnchor.addEventListener('click', noAnchorFunction, false)
         }
         catch(err) { 
             var popUp = document.getElementById("popup");
@@ -231,20 +234,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                 'click', function(e) {
                     // e.preventDefault();
                     if (!input.classList.contains("clicked")) {
-                   var holder = input.value;
-                   input.value = "";
-                   input.classList.add("clicked");
-                    
-                   document.addEventListener(
-                    'click', function(e) {
-                        // e.preventDefault();
-                        if (e.target != input && input.value === "") {
-                            input.classList.remove("clicked")
-                            input.value = holder;
-                        }
-                    
-                    }, false
-                )
+                        var holder = input.value;
+                        input.value = "";
+                        input.classList.add("clicked");
+                            
+                        document.addEventListener(
+                            'click', function(e) {
+                                // e.preventDefault();
+                                if (e.target != input && input.value === "") {
+                                    input.classList.remove("clicked")
+                                    input.value = holder;
+                                }
+                            
+                            }, false
+                        )
                     }
                 
                 }, false
@@ -262,11 +265,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         var x = document.getElementById(divString);
         // debugger
         if (x.classList.contains("hidden")) {
-            console.log(divString)
             x.classList.remove("hidden")
             x.classList.add("showing")
         } else {
-            console.log(divString)
             x.classList.remove("showing")
             x.classList.add("hidden")
         }
