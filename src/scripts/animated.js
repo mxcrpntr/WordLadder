@@ -6,7 +6,7 @@ export default function animateTree() {
     height = 250;
 
 var tree = d3.layout.tree()
-    .size([width - 20, height - 20]);
+    .size([width - 30, height - 30]);
 
 const parentNode = {id: 0, word: "cat", parent: null, children: []};
 var root = {id: parentNode.id, word: parentNode.word, parent: null, children: []},
@@ -40,16 +40,18 @@ var svg = d3.select("#animation").append("svg")
 var node = svg.selectAll(".node"),
     link = svg.selectAll(".link");
 
-var duration = 2000,
-    timer = setInterval(update, duration);
-
 var treeQueue = parentNode.children;
 var currentNode = root;
+
+
 
 
 function update() {
   if (treeQueue.length === 0) return clearInterval(timer);
 
+  if (duration && document.getElementById("animation")) {
+    document.getElementById("animation").style.height = "250px";
+  }
   currentNode = treeQueue.shift();
   root.children = currentNode.parent.children
 nodes = tree(root);
@@ -101,4 +103,8 @@ node.enter().append("text")
     .attr("x", function(d) { return d.px + 3; })
     .attr("y", function(d) { return d.py + 10; });
 }
+update();
+
+var duration = 2000,
+    timer = setInterval(update, duration);
 }

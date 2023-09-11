@@ -8,6 +8,11 @@ ladderBox.innerHTML = "";
 
 const form = ladderBox.appendChild(document.createElement("form"));
 
+const instructions = document.createElement("p")
+instructions.innerText = "enter a sequence of words below, each connected by changing a letter, adding/dropping a letter, or anagramming the prior word"
+
+form.appendChild(instructions);
+
 var input = document.createElement("input");
 input.setAttribute("type","text");
 input.setAttribute("value","Enter a word");
@@ -29,7 +34,7 @@ newLabel = document.createElement("label");
 newLabel.appendChild(submit);
 form.appendChild(newLabel);
 
-const returnDiv2 = document.getElementById("main").appendChild(document.createElement("div"))
+const returnDiv2 = document.getElementById("ladder").appendChild(document.createElement("div"))
         returnDiv2.setAttribute("id","return2");
         const returnAnchor2 = document.createElement("a");
         returnAnchor2.innerText = "return to the previous form";
@@ -107,17 +112,31 @@ form.addEventListener('submit', event => {
 
 
 function cleanUpMessage(message) {
-    document.getElementById("popup").innerText = message;
+    const popup = document.getElementById("popup")
+    popup.innerHTML = ""
+    const graf = popup.appendChild(document.createElement("p"))
+    graf.innerText = message;
     document.getElementById("popup").appendChild(document.createElement("br"))
-    const anotherAnchor = document.getElementById("popup").appendChild(document.createElement("a"));
-    anotherAnchor.innerText = "(close)";
+    // const anotherAnchor = document.createElement("a")
+    // anotherAnchor.innerText = "(close)";
+    // document.getElementById("popup")
+        // .appendChild(document.createElement("p")).appendChild(anotherAnchor);
     toggleHideDiv("popup");
-    anotherAnchor.addEventListener(
-    'click', function(e) {
+    toggleHideDiv("xAnchorpopup")
+    // anotherAnchor.addEventListener(
+    // 'click', function(e) {
+    //     e.preventDefault();
+    //     toggleHideDiv("popup");
+    // }, false
+    // );
+    const xAnchorpopup = document.getElementById("xAnchorpopup");
+    const xAnchorListener = (e) => {
         e.preventDefault();
         toggleHideDiv("popup");
-    }, false
-    );
+        toggleHideDiv("xAnchorpopup");
+        xAnchorpopup.removeEventListener('click',xAnchorListener);
+    }
+    xAnchorpopup.addEventListener('click', xAnchorListener, false);
 }
 
 function clickClear() {

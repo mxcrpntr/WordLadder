@@ -38,7 +38,6 @@ for (let i = 0; i < childArr.length; i++) {
     parentNode.children = parentNode.children.concat([newChild]);
 }
 parentNode.children[parentNode.children.length - 1].children.push( {id: childArr.length + 1, word: "carl", parent: parentNode.children[parentNode.children.length - 1], children: []})
-console.log(parentNode);
 
 
 
@@ -75,17 +74,13 @@ function update() {
   root.children = currentNode.parent.children
 nodes = tree(root);
 
-//   console.log(currentNode.word)
   // Add a new node to a random parent.
   var n = {id: currentNode.id, word: currentNode.word, parent: currentNode.parent, children: currentNode.children},
       p = currentNode.parent;
   if (p.children) p.children.push(n); else p.children = [n];
   nodes.push(n);
-  console.log(n.word)
-  console.log(p.children)
 
   treeQueue = treeQueue.concat(currentNode.children);
-    console.log(treeQueue.map(node => node.word))
   // Recompute the layout and data join.
   node = node.data(tree.nodes(root), function(d) { return d.id; });
   link = link.data(tree.links(nodes), function(d) { return d.source.id + "-" + d.target.id; });

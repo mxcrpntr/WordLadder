@@ -33,13 +33,28 @@ document.addEventListener("DOMContentLoaded", async () => {
             diyLadder(dictionarySet,dictionaryObj);
         }, false
     );
+
+    const info = document.getElementById("info")
+
+    info.addEventListener("click", function(e) {
+        e.stopPropagation();
+    }, false)
     
+    document.getElementById("main").addEventListener("click", function(e) {
+        if (info.classList.contains("showing")) {
+            toggleHideDiv("info");
+            toggleHideDiv("xAnchor");
+            document.getElementById("animation").style.height = "25px";
+        }
+    }, false)
     const infoAnchor = document.getElementById("infoAnchor");
     infoAnchor.addEventListener(
         'click', function(e) {
             e.preventDefault();
             toggleHideDiv("info");
-            if (document.getElementById("info").classList.contains("showing")) {
+            toggleHideDiv("xAnchor");
+            if (info.classList.contains("showing")) {
+                info.scrollTop = 0;
                 document.getElementById("animation").innerHTML = "";
                 animateTree();
             }
@@ -47,10 +62,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
     
     const closeAnchor = document.getElementById("close");
+    const xAnchor = document.getElementById("xAnchor")
     closeAnchor.addEventListener(
         'click', function(e) {
             e.preventDefault();
+            document.getElementById("animation").style.transition = "none";
+            document.getElementById("animation").style.height = "25px";
+            document.getElementById("animation").style.transition = "height 2s";
             toggleHideDiv("info");
+            toggleHideDiv("xAnchor");
+        }, false
+    );
+    xAnchor.addEventListener(
+        'click', function(e) {
+            e.preventDefault();
+            document.getElementById("animation").style.transition = "none";
+            document.getElementById("animation").style.height = "25px";
+            document.getElementById("animation").style.transition = "height 2s";
+            toggleHideDiv("info");
+            toggleHideDiv("xAnchor");
+
         }, false
     );
 
