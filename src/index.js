@@ -172,7 +172,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             returnAnchor.innerText = "return to the previous form";
             returnDiv.appendChild(returnAnchor);
     
-            returnAnchor.addEventListener('click', function(e) {
+            const returnListener = (e) => {
                 e.preventDefault();
                 let currentLadderDiv = document.getElementById("currentLadder")
                 if (currentLadderDiv) {
@@ -180,9 +180,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
                 toggleHideDiv("graph");
                 toggleHideDiv("input");
+                returnAnchor.removeEventListener('click', returnListener)
                 returnDiv.remove();
-    
-            }, false);
+            }
+
+            returnAnchor.addEventListener('click', returnListener, false);
     
             if (testLadder) {
                 const lastNodeText = document.getElementById(testLadder.join(".")).getElementsByTagName("text")[0];

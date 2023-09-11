@@ -190,6 +190,7 @@ div#return {
     position: absolute;
     z-index: 2;
     top: 560px;
+    cursor: pointer;
 }
 
 
@@ -257,6 +258,9 @@ div#ladderPopUp.showing {
     margin-right: auto;
     overflow: scroll;
     z-index: 2;
+    p {
+        text-align: center;
+    }
 }
 
 div#images {
@@ -283,6 +287,12 @@ div#return2 {
 
 a.boldAnchor:hover {
     transform: scale(1.3);
+    transition: .5s;
+    cursor: pointer;
+
+}
+a.boldAnchor2:hover {
+    transform: scale(1.1);
     transition: .5s;
     cursor: pointer;
 
